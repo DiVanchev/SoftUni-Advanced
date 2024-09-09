@@ -1,1 +1,1 @@
-# SoftUni-Advanced yeahhhh
+# SoftUni-Advanced
