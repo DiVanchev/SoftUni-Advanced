@@ -16,7 +16,6 @@ function magicMatrices(arrs) {
 
   return true;
 }
-
 console.log(
   magicMatrices([
     [4, 5, 6],
