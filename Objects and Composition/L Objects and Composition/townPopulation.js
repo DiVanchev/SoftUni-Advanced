@@ -1,17 +1,26 @@
 function townPopulation(arr) {
-    let strArr = arr.toString();
-    strArr.split('<->');
-    return strArr;
-    //const townRegistry = {
-    //    name: ,
-    //    population:
-    //};
-//
-    //for()
+  const result = {};
+
+  for (const town of arr) {
+    let [name, population] = town.split(" <-> ");
+
+    population = Number(population);
+
+    if (result.hasOwnProperty(name)) {
+      result[name] += population;
+    } else {
+      result[name] = population;
+    }
+  }
+
+  for (const name in result) {
+    console.log(name, ":", result[name]);
+  }
 }
-console.log(townPopulation(['Sofia <-> 1200000',
-    'Montana <-> 20000',
-    'New York <-> 10000000',
-    'Washington <-> 2345000',
-    'Las Vegas <-> 1000000']
-    ));
+townPopulation([
+  "Sofia <-> 1200000",
+  "Montana <-> 20000",
+  "New York <-> 10000000",
+  "Washington <-> 2345000",
+  "Las Vegas <-> 1000000",
+]);
