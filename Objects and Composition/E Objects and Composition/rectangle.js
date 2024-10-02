@@ -1,18 +1,17 @@
 function rectangle(width, height, color) {
+  color = color[0].toUpperCase() + color.substring(1);
 
-    color = color[0].toUpperCase() + color.substring(1);
-
-    return {
-        width,
-        height,
-        color,
-        calcArea: function () {
-            return this.width * this.height;
-        }
-    }
+  return {
+    width,
+    height,
+    color,
+    calcArea: function () {
+      return this.width * this.height;
+    },
+  };
 }
 
-let rect = rectangle(4, 5, 'red');
+let rect = rectangle(4, 5, "red");
 console.log(rect.width);
 console.log(rect.height);
 console.log(rect.color);
