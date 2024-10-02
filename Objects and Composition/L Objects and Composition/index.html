@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>FromJSONToHTMLTable</title>
+    <style>
+      table,
+      th {
+        border: groove;
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+      }
+      td,
+      th {
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper"></div>
+    <script>
+      function jsonToHtmlTable(input) {
+        const data = JSON.parse(input);
+        const headers = Object.keys(data[0]).map((h) => h.trim());
+
+        return `
+<table>
+<tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+${data
+  .map(
+    (entry) => `<tr>${headers.map((h) => `<td>${entry[h]}</td>`).join("")}</tr>`
+  )
+  .join("")}
+    </table>
+  `;
+      }
+
+      window.onload = function () {
+        let container = document.getElementById("wrapper");
+        container.innerHTML = jsonToHtmlTable(
+          `[{"Name":"Pesho", "Score":4, "Grade":8}, {"Name":"Gosho", "Score":5, "Grade":8}, {"Name":"Angel", "Score":5.50, "Grade":10}]`
+        );
+      };
+    </script>
+  </body>
+</html>
