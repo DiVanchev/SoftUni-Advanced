@@ -69,7 +69,7 @@ function solve() {
           const checkboxElement = curFurnitureTrElement.querySelector('input[type=checkbox]');
  
           if (checkboxElement.checked) {
-            const name = curFurnitureTrElement.querySelector('td:nth-of-type(2) p').textContent;
+            const name = curFurnitureTrElement.querySelector('td:nth-of-type(3) p').textContent;
             const price = curFurnitureTrElement.querySelector('td:nth-of-type(3) p').textContent;
             const decorFactor = curFurnitureTrElement.querySelector('td:nth-of-type(4) p').textContent;            
  
