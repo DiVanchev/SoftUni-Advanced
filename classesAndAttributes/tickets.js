@@ -1,38 +1,38 @@
-class Ticket {
-    constructor(destination, price, status) {
-        this.destination = destination;
-        this.price = Number(price);
-        this.status = status;
-    }
-}
+function juiceFlavors(input) {
+    const juices = {};
+    const bottles = {};
 
-function manageTickets(ticketDescriptions, sortingCriterion) {
-    const tickets = ticketDescriptions.map(description => {
-        const [destination, price, status] = description.split('|');
-        return new Ticket(destination, price, status);
-    });
+    input.forEach(line => {
+        const [juice, quantity] = line.split(' => ');
+        const quantityNumber = Number(quantity);
 
-    return tickets.sort((a, b) => {
-        if (sortingCriterion === 'price') {
-            return a.price - b.price;
+        if (!juices[juice]) {
+            juices[juice] = 0;
         }
-        return a[sortingCriterion].localeCompare(b[sortingCriterion]);
+
+        juices[juice] += quantityNumber;
+
+        if (juices[juice] >= 1000) {
+            const newBottles = Math.floor(juices[juice] / 1000);
+            if (!bottles[juice]) {
+                bottles[juice] = 0;
+            }
+
+            bottles[juice] += newBottles;
+            juices[juice] %= 1000;
+        }
+    });
+
+    Object.entries(bottles).forEach(([juice, quantity]) => {
+        console.log(`${juice} => ${quantity}`);
     });
 }
 
 
-let tickets = [
-    'Philadelphia|94.20|available',
-    'New York City|95.99|available',
-    'New York City|95.99|sold',
-    'Boston|126.20|departed'
-];
-
-let sortedByDestination = manageTickets(tickets, 'destination');
-console.log(sortedByDestination);
-
-let sortedByPrice = manageTickets(tickets, 'price');
-console.log(sortedByPrice);
-
-let sortedByStatus = manageTickets(tickets, 'status');
-console.log(sortedByStatus);
+juiceFlavors([
+    'Orange => 2000',
+    'Peach => 1432',
+    'Banana => 450',
+    'Peach => 600',
+    'Strawberry => 549'
+]);
