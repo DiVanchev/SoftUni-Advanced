@@ -9,6 +9,8 @@ function validate() {
     const submitButton = document.getElementById('submit');
     const validDiv = document.getElementById('valid');
 
+    const invalidBorder = '2px solid red';
+
     companyCheckbox.addEventListener('change', () => {
         companyInfoFieldset.style.display = companyCheckbox.checked ? 'block' : 'none';
     });
@@ -20,36 +22,36 @@ function validate() {
 
         const usernamePattern = /^[a-zA-Z0-9]{3,20}$/;
         if (!usernamePattern.test(usernameInput.value)) {
-            usernameInput.style.border = '2px solid red';
+            usernameInput.style.border = invalidBorder;
             isValid = false;
         } else {
-            usernameInput.style.border = 'none';
+            usernameInput.style.border = ''; // Reset to default if valid
         }
 
         const emailPattern = /^[^@]+@[^@]+\.[^@]+$/;
         if (!emailPattern.test(emailInput.value)) {
-            emailInput.style.border = '2px solid red';
+            emailInput.style.border = invalidBorder;
             isValid = false;
         } else {
-            emailInput.style.border = 'none';
+            emailInput.style.border = '';
         }
 
         const passwordPattern = /^\w{5,15}$/;
         if (!passwordPattern.test(passwordInput.value)) {
-            passwordInput.style.border = '2px solid red';
+            passwordInput.style.border = invalidBorder;
             isValid = false;
         } else {
-            passwordInput.style.border = 'none';
+            passwordInput.style.border = '';
         }
 
         if (
             !passwordPattern.test(confirmPasswordInput.value) ||
             passwordInput.value !== confirmPasswordInput.value
         ) {
-            confirmPasswordInput.style.border = '2px solid red';
+            confirmPasswordInput.style.border = invalidBorder;
             isValid = false;
         } else {
-            confirmPasswordInput.style.border = 'none';
+            confirmPasswordInput.style.border = '';
         }
 
         if (companyCheckbox.checked) {
@@ -59,10 +61,10 @@ function validate() {
                 companyNumber < 1000 ||
                 companyNumber > 9999
             ) {
-                companyNumberInput.style.border = '2px solid red';
+                companyNumberInput.style.border = invalidBorder;
                 isValid = false;
             } else {
-                companyNumberInput.style.border = 'none';
+                companyNumberInput.style.border = '';
             }
         }
 

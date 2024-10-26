@@ -1,86 +1,101 @@
-window.onload = function solve() {
+window.onload = function () {
+  // Selecting required elements with more specific selectors
   const taskInput = document.getElementById('task');
   const descriptionInput = document.getElementById('description');
   const dateInput = document.getElementById('date');
   const addButton = document.getElementById('add');
-  const openSection = document.querySelectorAll('section')[1].querySelector('div:nth-of-type(2)');
+  const openSection = document.querySelector("#open-section");  // Updated to use an ID for clarity
   const inProgressSection = document.getElementById('in-progress');
-  const completeSection = document.querySelectorAll('section')[3].querySelector('div:nth-of-type(2)');
+  const completeSection = document.querySelector("#complete-section"); // Updated to use an ID for clarity
 
-  addButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    const task = taskInput.value.trim();
-    const description = descriptionInput.value.trim();
-    const date = dateInput.value.trim();
-
-    if (!task || !description || !date) {
+  // Verify that all necessary elements are present in the DOM
+  if (!taskInput || !descriptionInput || !dateInput || !addButton || !openSection || !inProgressSection || !completeSection) {
+      console.error("One or more required elements couldn't be found. Please check the HTML structure.");
       return;
-    }
+  }
 
-    const article = createArticle(task, description, date);
-    openSection.appendChild(article);
+  // Add event listener for the "Add" button
+  addButton.addEventListener('click', (e) => {
+      e.preventDefault();
 
-    taskInput.value = '';
-    descriptionInput.value = '';
-    dateInput.value = '';
+      // Validate inputs
+      const task = taskInput.value.trim();
+      const description = descriptionInput.value.trim();
+      const date = dateInput.value.trim();
+
+      if (!task || !description || !date) return;
+
+      // Create the task article and append it to the "Open" section
+      const article = createArticle(task, description, date);
+      openSection.appendChild(article);
+
+      // Clear input fields after adding the task
+      taskInput.value = '';
+      descriptionInput.value = '';
+      dateInput.value = '';
   });
 
+  // Function to create and return the article element
   function createArticle(task, description, date) {
-    const article = document.createElement('article');
+      const article = document.createElement('article');
+      article.innerHTML = `
+          <h3>${task}</h3>
+          <p>Description: ${description}</p>
+          <p>Due Date: ${date}</p>
+      `;
 
-    const h3 = document.createElement('h3');
-    h3.textContent = task;
+      // Create buttons container div
+      const divButtons = document.createElement('div');
+      divButtons.className = 'flex';
 
-    const pDescription = document.createElement('p');
-    pDescription.textContent = `Description: ${description}`;
+      // Start Button
+      const startButton = document.createElement('button');
+      startButton.className = 'green';
+      startButton.textContent = 'Start';
+      startButton.addEventListener('click', () => startTask(article));
 
-    const pDate = document.createElement('p');
-    pDate.textContent = `Due Date: ${date}`;
+      // Delete Button
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'red';
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => article.remove());
 
-    const divButtons = document.createElement('div');
-    divButtons.className = 'flex';
+      // Append buttons to the container
+      divButtons.appendChild(startButton);
+      divButtons.appendChild(deleteButton);
+      article.appendChild(divButtons);
 
-    const startButton = document.createElement('button');
-    startButton.className = 'green';
-    startButton.textContent = 'Start';
-    startButton.addEventListener('click', () => startTask(article));
-
-    const deleteButton = document.createElement('button');
-    deleteButton.className = 'red';
-    deleteButton.textContent = 'Delete';
-    deleteButton.addEventListener('click', () => article.remove());
-
-    divButtons.appendChild(startButton);
-    divButtons.appendChild(deleteButton);
-
-    article.appendChild(h3);
-    article.appendChild(pDescription);
-    article.appendChild(pDate);
-    article.appendChild(divButtons);
-
-    return article;
+      return article;
   }
 
+  // Function to move the article to the 'In Progress' section
   function startTask(article) {
-    const finishButton = document.createElement('button');
-    finishButton.className = 'orange';
-    finishButton.textContent = 'Finish';
-    finishButton.addEventListener('click', () => finishTask(article));
+      const finishButton = document.createElement('button');
+      finishButton.className = 'orange';
+      finishButton.textContent = 'Finish';
 
-    const buttonContainer = article.querySelector('.flex');
-    buttonContainer.innerHTML = '';
-    buttonContainer.appendChild(finishButton);
+      // Add event listener for the "Finish" button
+      finishButton.addEventListener('click', () => finishTask(article));
 
-    inProgressSection.appendChild(article);
+      // Replace "Start" button with "Finish" button in the button container
+      const buttonContainer = article.querySelector('.flex');
+      if (buttonContainer) {
+          buttonContainer.innerHTML = '';
+          buttonContainer.appendChild(finishButton);
+          inProgressSection.appendChild(article); // Move article to 'In Progress' section
+      } else {
+          console.error("Button container not found in the article.");
+      }
   }
 
+  // Function to move the article to the 'Complete' section
   function finishTask(article) {
-    const buttonContainer = article.querySelector('.flex');
-    if (buttonContainer) {
-      buttonContainer.remove();
-    }
-
-    completeSection.appendChild(article);
+      const buttonContainer = article.querySelector('.flex');
+      if (buttonContainer) {
+          buttonContainer.remove(); // Remove button container
+          completeSection.appendChild(article); // Move article to 'Complete' section
+      } else {
+          console.error("Button container not found in the article.");
+      }
   }
-}
+};
